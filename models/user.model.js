@@ -17,6 +17,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: [true, "Password is required"],
   },
+  role:{
+    type: String,
+    default: "basic",
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  verifCode:{
+    type: Number,
+  }
 });
 
 const userModel = mongoose.model("user", userSchema);
