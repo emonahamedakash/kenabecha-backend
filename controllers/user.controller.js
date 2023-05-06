@@ -57,9 +57,9 @@ const allUser = async (req, res) => {
   const users = await userModel.find();
   res.status(200).send(users);
 };
-const singleUser = async (req, res) => {
+const deletUser = async (req, res) => {
   const id = req.params.id;
-  const user = await userModel.findOne({ id: id });
+  const user = await userModel.findOneAndDelete({ _id: id });
   res.status(200).send(user);
 };
 
@@ -79,4 +79,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { addUser, allUser, singleUser, login, mailVerify };
+module.exports = { addUser, allUser, deletUser, login, mailVerify };

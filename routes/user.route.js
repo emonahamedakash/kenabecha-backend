@@ -2,15 +2,15 @@ const router = require("express").Router();
 const {
   addUser,
   allUser,
-  singleUser,
+  deletUser,
   login,
-  mailVerify
+  mailVerify,
 } = require("../controllers/user.controller.js");
 
 router.post("/user", addUser);
 router.post("/mailverify", mailVerify);
 router.get("/user", allUser);
-router.get("/user/:id", singleUser);
+router.post("/user/:id", deletUser);
 router.get("/login", login);
 
 module.exports = router;
