@@ -33,5 +33,21 @@ const allOrder = async (req, res) => {
   res.status(200).send(orders);
 };
 
+const delivery = async (req, res) => {
+  const id = req.params.id;
 
-module.exports = { createOrder, allOrder };
+
+  //Finding that user in database
+  const order = await orderModel.findOne({ _id: id });
+  
+  //Verifying the mail.
+  if (order) {
+      const result = await orderModel.findOneAndUpdate({ _id: id },{$set: {isDelivered: true}});
+      res.status(200).json({ success: true, message: result });
+  } else {
+    res.status(404).json({ success: false, message: "Order not Found" });
+  }
+}
+
+
+module.exports = { createOrder, allOrder, delivery };

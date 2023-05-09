@@ -12,11 +12,11 @@ let transporter = nodemailer.createTransport({
     },
 })
 
-const verifyEmail = async (name, vcode) =>{
+const verifyEmail = async (name, email, vcode) =>{
     try {
         let info = await transporter.sendMail({
             from: process.env.EMAIL,
-            to: "emonahamedakash@gmail.com",
+            to: email,
             subject: "Please verify your email",
             html: `<p>Hello ${name}, your verification code is: <b>${vcode}</b></p>`,
         })

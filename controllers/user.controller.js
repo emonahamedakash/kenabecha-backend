@@ -19,7 +19,7 @@ const addUser = (req, res) => {
         res.status(500).send(err);
       } else {
         res.status(201).send(result);
-        verifyEmail(req.body.name, verifyCode);
+        verifyEmail(req.body.name,req.body.email, verifyCode);
         console.log("new user created");
       }
     });
