@@ -1,8 +1,8 @@
 const productModel = require("../models/product.model.js");
 
 const multer = require("multer");
-
-
+const fs = require("fs")
+const path = require("path")
 
 const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -12,6 +12,7 @@ const imageStorage = multer.diskStorage({
     cb(null, Date.now() + "_" + file.originalname);
   },
 });
+
 const upload = multer({ storage: imageStorage });
 
 const addProduct = async (req, res) => {
@@ -73,6 +74,27 @@ const deleteProduct = async (req, res) => {
     }
   });
 };
+
+const uploadProductImage = async (req, res) => {
+  const result = await productModel.findOneAndUpdate({
+    _id: req.params.id
+  }, { image: req.file.filename })
+
+  console.log(result);
+  res.send('Uploaded')
+}
+
+const getProductImage = async (req, res) => {
+  const product = await productModel.findOne({ _id: req.params.id })
+  const imgPath = path.join(__dirname, '../uploads', product.image)
+
+  if(fs.existsSync(imgPath)){
+    return res.sendFile(imgPath)
+  }
+  
+  res.send('Image not found')
+}
+
 module.exports = {
   addProduct,
   allProduct,
@@ -80,4 +102,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   upload,
+  uploadProductImage,
+  getProductImage
 };

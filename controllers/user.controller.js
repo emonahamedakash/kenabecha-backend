@@ -1,5 +1,7 @@
 const userModel = require("../models/user.model.js");
 const {verifyEmail} = require("./email.controller.js");
+const { captcha } = require("./captcha.controller.js");
+
 
 
 //New user Registration
@@ -67,6 +69,8 @@ const login = async (req, res) => {
   const mail = req.query.email;
   const password = req.query.password;
 
+  const { token, inputVal } = req.body;
+  captcha(token, inputVal);
   const user = await userModel.findOne({ email: mail });
   if (user) {
     if (user.password === password) {
