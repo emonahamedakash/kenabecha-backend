@@ -7,6 +7,10 @@ const productRouter = require("./routes/product.route.js");
 const userRouter = require("./routes/user.route.js");
 const orderRouter = require("./routes/order.route.js");
 
+const fileupload = require('express-fileupload'); 
+
+
+
 dotenv.config();
 mongoose.set("strictQuery", false);
 const app = express();
@@ -14,10 +18,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(fileupload({useTempFiles: true}))
+
+
 
 app.use("/api", productRouter);
 app.use("/api", userRouter);
 app.use("/api", orderRouter);
+
 
 
 //Connecting to Db
