@@ -2,39 +2,10 @@ const productModel = require("../models/product.model.js");
 const cloudinary = require('cloudinary').v2;
 
 
-// const uploadImage = async (image, title) =>{
-//   console.log(image);
-//   //Cloudinary
-// cloudinary.config({ 
-//   cloud_name: 'devils', 
-//   api_key: '627531486253236', 
-//   api_secret: '7EvdZrev_0faoEKGlfnBMvU_Azc',
-//   secure: true
-// });
- 
-// await cloudinary.uploader.upload(image.tempFilePath,
-//   {
-//     public_id: `${Date.now()}`,
-//     resource_type: "auto",
-//     }
-//   ).then(
-//   result=>{
-//     console.log("From Cloudinary: ",result.url);
-//     return result.url;
-//   }
-// )
-// .catch(err=>console.log(err));
-  
-// }
-
-
-
 const addProduct = async (req, res) => {
   const allProduct = await productModel.find();
   let id = allProduct.length;
   const file = req.files.image;
-  // const imageUrl = uploadImage(file, req.body.title);
-  // console.log("from add product: ",imageUrl);
 //image upload start
   cloudinary.config({ 
     cloud_name: 'devils', 
@@ -94,6 +65,11 @@ const updateProduct = async (req, res) => {
       desc: desc,
     }
   );
+  if (updatedProduct) {
+    res.send(updateProduct);
+  }else {
+    res.send("Error");
+  }
 };
 
 const deleteProduct = async (req, res) => {
@@ -107,25 +83,7 @@ const deleteProduct = async (req, res) => {
   });
 };
 
-// const uploadProductImage = async (req, res) => {
-//   const result = await productModel.findOneAndUpdate({
-//     _id: req.params.id
-//   }, { image: req.file.filename })
 
-//   console.log(result);
-//   res.send('Uploaded')
-// }
-
-// const getProductImage = async (req, res) => {
-//   const product = await productModel.findOne({ _id: req.params.id })
-//   const imgPath = path.join(__dirname, '../uploads', product.image)
-
-//   if(fs.existsSync(imgPath)){
-//     return res.sendFile(imgPath)
-//   }
-  
-//   res.send('Image not found')
-// }
 
 module.exports = {
   addProduct,
@@ -133,10 +91,11 @@ module.exports = {
   singleProduct,
   updateProduct,
   deleteProduct,
-  // upload,
-  // uploadProductImage,
-  // getProductImage
+  
 };
+
+
+//Manual upload using multer
 // const productModel = require("../models/product.model.js");
 
 // const multer = require("multer");
@@ -219,7 +178,7 @@ module.exports = {
 //     _id: req.params.id
 //   }, { image: req.file.filename })
 
-//   console.log(result);
+//   console.log(result); 
 //   res.send('Uploaded')
 // }
 

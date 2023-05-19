@@ -6,12 +6,12 @@ const createOrder = (req, res) => {
 
   try {
     const newOrder = new orderModel({
-      title: req.body.title,
-      price: req.body.price,
+      title: req.body.cartData[0].title,
+      price: req.body.cartData[0].price,
       address: req.body.address,
       phone: req.body.phone,
-      date: req.body.date,
-      isDelivered: req.body.isDelivered
+      userId: req.body.userId,
+      date: Date.now(),
     });
     newOrder.save((err, result) => {
       if (err) {

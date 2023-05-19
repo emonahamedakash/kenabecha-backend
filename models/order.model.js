@@ -17,6 +17,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     require: [true, "Password is required"],
   },
+  userId: {
+    type: String,
+    require: [true, "User Id is required"],
+    default: "Unknown User"
+  },
   date:{
     type: String,
   },

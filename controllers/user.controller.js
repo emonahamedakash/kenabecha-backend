@@ -64,13 +64,13 @@ const deletUser = async (req, res) => {
   const user = await userModel.findOneAndDelete({ _id: id });
   res.status(200).send(user);
 };
-
+//Login part
 const login = async (req, res) => {
-  const mail = req.query.email;
-  const password = req.query.password;
+  const mail = req.body.email;
+  const password = req.body.password;
 
-  const { token, inputVal } = req.body;
-  captcha(token, inputVal);
+  // const { token, inputVal } = req.body;
+  // captcha(token, inputVal);
   const user = await userModel.findOne({ email: mail });
   if (user) {
     if (user.password === password) {

@@ -11,6 +11,6 @@ router.post("/user", addUser);
 router.post("/mailverify", mailVerify);
 router.get("/user", allUser);
 router.post("/user/:id", deletUser);
-router.get("/login", login);
+router.post("/login", login);
 
 module.exports = router;
