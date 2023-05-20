@@ -1,9 +1,10 @@
 const orderModel = require("../models/order.model.js");
+const {updateStock} = require("./stock.controller.js");
 
 
 //New order
 const createOrder = (req, res) => {
-
+console.log(req.body);
   try {
     const newOrder = new orderModel({
       title: req.body.cartData[0].title,
@@ -15,8 +16,10 @@ const createOrder = (req, res) => {
     });
     newOrder.save((err, result) => {
       if (err) {
+
         res.status(500).send(err);
       } else {
+        updateStock(req.body.cartData[0]._id)
         res.status(201).send(result);
         console.log("new order created");
       }

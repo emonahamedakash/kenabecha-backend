@@ -28,17 +28,11 @@ const productSchema = new mongoose.Schema({
   image : {
     type: String,
     require: false
+  },
+  stock: {
+    type: Number,
+    min: 1,
   }
-  // image: {
-  //   data: Buffer,
-  //   contentType: String,
-  // },
-  // rating: {
-  //   type: Number,
-  //   require: false,
-  //   min: 0,
-  //   max: 5,
-  // },
 });
 
 const productModel = mongoose.model("product", productSchema);

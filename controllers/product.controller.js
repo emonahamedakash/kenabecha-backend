@@ -29,6 +29,7 @@ const addProduct = async (req, res) => {
       desc: req.body.desc,
       category: req.body.category,
       brand: req.body.brand,
+      stock: req.body.stock,
       image: imageUrl.url,
     });
     newProduct.save((err, result) => {
@@ -53,23 +54,17 @@ const singleProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  const id = req.body.id;
-  const title = req.body.title;
-  const price = req.body.price;
-  const desc = req.body.desc;
-  const updatedProduct = await productModel.findOneAndUpdate(
-    { _id: id },
+
+  await productModel.findOneAndUpdate(
+    { _id: req.body.id },
     {
-      title: title,
-      price: price,
-      desc: desc,
-    }
-  );
-  if (updatedProduct) {
-    res.send(updateProduct);
-  }else {
-    res.send("Error");
-  }
+      title: req.body.title,
+      price: req.body.price,
+      desc: req.body.desc,
+      stock: req.body.stock
+    }).then((response)=>res.send(response))
+    .catch((err)=> console.log(err));
+  
 };
 
 const deleteProduct = async (req, res) => {
@@ -83,6 +78,23 @@ const deleteProduct = async (req, res) => {
   });
 };
 
+const lowStockNotification = async (req, res) =>{
+  // const products = await productModel.find();
+  // const lowStock = products.filter((each)=>{
+  //   console.log(each.stock);
+  // });
+  // res.send(products);
+  await productModel.find({stock: { $lt: 15 }})
+  .then((response)=>{
+    console.log(response);
+    res.send(response);
+  }).catch((error)=>{
+    console.log(error);
+    res.send(error);
+  })
+
+}
+
 
 
 module.exports = {
@@ -91,6 +103,7 @@ module.exports = {
   singleProduct,
   updateProduct,
   deleteProduct,
+  lowStockNotification
   
 };
 
