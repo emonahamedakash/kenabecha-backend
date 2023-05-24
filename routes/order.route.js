@@ -6,7 +6,7 @@ const {
 } = require("../controllers/order.controller.js");
 
 router.post("/order", createOrder);
-router.post("/delivery", delivery);
+router.put("/delivery", delivery);
 router.get("/order", allOrder);
 
 module.exports = router;

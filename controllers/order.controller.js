@@ -21,7 +21,6 @@ console.log(req.body);
       } else {
         updateStock(req.body.cartData[0]._id)
         res.status(201).send(result);
-        console.log("new order created");
       }
     });
   } catch (error) {
@@ -30,26 +29,35 @@ console.log(req.body);
 };
 
 
-//Getting all user
+//Getting all Orders
 const allOrder = async (req, res) => {
   const orders = await orderModel.find();
   res.status(200).send(orders);
 };
 
 const delivery = async (req, res) => {
-  const id = req.params.id;
+  const id = req.body.id;
 
+  await orderModel.findOneAndUpdate({_id : id} ,
+    {$set:{isDelivered : true}})
+     .then((response)=>{
+      res.send(response);
+      console.log(response);
+  })
+  .catch((error)=>{
+    res.send(error);
+      console.log(error);
+  })
 
-  //Finding that user in database
-  const order = await orderModel.findOne({ _id: id });
+  // //Finding that user in database
+  // const order = await orderModel.findOne({ _id: id });
   
-  //Verifying the mail.
-  if (order) {
-      const result = await orderModel.findOneAndUpdate({ _id: id },{$set: {isDelivered: true}});
-      res.status(200).json({ success: true, message: result });
-  } else {
-    res.status(404).json({ success: false, message: "Order not Found" });
-  }
+  // //Verifying the mail.
+  // if (order) {
+  //     res.status(200).json({ success: true, message: result });
+  // } else {
+  //   res.status(404).json({ success: false, message: "Order not Found" });
+  // }
 }
 
 

@@ -5,7 +5,8 @@ const {
   singleProduct,
   updateProduct,
   deleteProduct,
-  lowStockNotification
+  lowStockNotification,
+  search,
   // upload,
   // uploadProductImage,
   // getProductImage,
@@ -17,6 +18,7 @@ router.get("/product/:id", singleProduct);
 router.get("/lowstock", lowStockNotification);
 router.put("/product/update", updateProduct);
 router.delete("/product/:id", deleteProduct);
+router.get("/search/:key", search);
 // router.post("/add-product-image/:id", upload.single("image"), uploadProductImage);
 // router.get("/fetch-product-image/:id", getProductImage)
 module.exports = router;
