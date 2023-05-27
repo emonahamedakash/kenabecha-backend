@@ -1,9 +1,7 @@
-const productModel = require("../models/product.model.js");
+const { productModel, reviewModel } = require("../models/product.model.js");
 const cloudinary = require("cloudinary").v2;
 
 const addProduct = async (req, res) => {
-  const allProduct = await productModel.find();
-  let id = allProduct.length;
   const file = req.files.image;
   //image upload start
   cloudinary.config({
@@ -20,13 +18,13 @@ const addProduct = async (req, res) => {
   //image upload end
   try {
     const newProduct = new productModel({
-      id: id,
       title: req.body.title,
       price: req.body.price,
       desc: req.body.desc,
       category: req.body.category,
       brand: req.body.brand,
       stock: req.body.stock,
+      discount: req.body.discount,
       image: imageUrl.url,
     });
     newProduct.save((err, result) => {
@@ -59,6 +57,7 @@ const updateProduct = async (req, res) => {
         price: req.body.price,
         desc: req.body.desc,
         stock: req.body.stock,
+        discount: req.body.discount,
       }
     )
     .then((response) => res.send(response))
@@ -101,6 +100,36 @@ const search = async (req, res) => {
   console.log(searchData);
   res.send(searchData);
 };
+const addReview = async (req, res) => {
+  try {
+    const newReview = new reviewModel({
+      productId: req.body.productId,
+      rating: req.body.rating,
+      reviewText: req.body.reviewText,
+      user: req.body.user,
+    });
+    newReview.save((err, result) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(201).send(result);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getReview = async (req, res) => {
+  const reviews = await reviewModel
+    .find
+    //   {
+    //   productId: req.params.productId,
+    // }
+    ();
+  res
+    .status(200)
+    .send(reviews.filter((each) => each.productId === req.params.productId));
+};
 
 module.exports = {
   addProduct,
@@ -110,6 +139,8 @@ module.exports = {
   deleteProduct,
   lowStockNotification,
   search,
+  addReview,
+  getReview,
 };
 
 //Manual upload using multer
